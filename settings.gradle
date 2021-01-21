@@ -1,0 +1,4 @@
+include ':sdk'
+include ':commons'
+include ':app'
+rootProject.name = "Gangame"
