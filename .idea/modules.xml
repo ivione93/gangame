@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Gangame.iml" filepath="$PROJECT_DIR$/.idea/modules/Gangame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Gangame.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Gangame.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/commons/Gangame.commons.iml" filepath="$PROJECT_DIR$/.idea/modules/commons/Gangame.commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sdk/Gangame.sdk.iml" filepath="$PROJECT_DIR$/.idea/modules/sdk/Gangame.sdk.iml" />
+    </modules>
+  </component>
+</project>
