@@ -7,4 +7,6 @@
     <string name="contentdescription">contentDescription</string>
     <string name="label_deal_price">Deal Price</string>
     <string name="label_original">Original</string>
+    <string name="error_request">Hubo un error en la carga</string>
+    <string name="label_retry">Reintentar</string>
 </resources>

@@ -19,6 +19,7 @@ class TopGameDeserializer: JsonDeserializer<TopGame> {
         val appId = json.asJsonObject["appid"].asInt.toString()
         val thumb = String.format(BASE_IMG_URL, appId)
         topGame.thumb = thumb
+        topGame.price = topGame.price / 100
 
         return topGame
     }

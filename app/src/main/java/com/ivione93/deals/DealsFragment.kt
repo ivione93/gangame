@@ -1,20 +1,55 @@
 package com.ivione93.deals
 
-import android.os.Bundle
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.commons.BaseListFragment
 import com.example.commons.DataBindingRecyclerAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.ivione93.Deal
 import com.ivione93.R
 import com.ivione93.BR
+import com.ivione93.data.GangameDataSource
 
 class DealsFragment : BaseListFragment() {
     override fun getAdapter(): RecyclerView.Adapter<*> {
         return  DataBindingRecyclerAdapter<Deal>(BR.deal, R.layout.item_deal)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onResume() {
+        super.onResume()
+        showDeals()
+    }
+
+    @SuppressLint("CheckResult")
+    private fun showDeals() {
+        GangameDataSource.getDeals()
+            .subscribe({ list ->
+                replaceItems(list)
+            }, { error ->
+                showError(error)
+            })
+    }
+
+    private fun replaceItems(list: List<Deal>) {
+        with(listAdapter as DataBindingRecyclerAdapter<Deal>) {
+            items.clear()
+            items.addAll(list)
+            notifyDataSetChanged()
+        }
+    }
+
+    private fun showError(error: Throwable) {
+        error.printStackTrace()
+
+        view?.let {
+            Snackbar.make(view as View, R.string.error_request, Snackbar.LENGTH_LONG)
+                .setAction(R.string.label_retry, { _: View -> showDeals()})
+                .show()
+        }
+    }
+
+    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (listAdapter as DataBindingRecyclerAdapter<Deal>)
             .items.addAll(getDummyDeals())
@@ -66,5 +101,5 @@ class DealsFragment : BaseListFragment() {
                 0,
                 "https://images.greenmangaming.com/8ce6b832d0e74a17971595575f99cddc/697bf4a26aa344e1b3c0c03e69af43b5.jpg")
         )
-    }
+    }*/
 }

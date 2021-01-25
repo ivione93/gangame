@@ -1,14 +1,15 @@
 package com.ivione93.owned
 
-import android.os.Bundle
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.commons.BaseListFragment
 import com.example.commons.DataBindingRecyclerAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.ivione93.BR
-import com.ivione93.Deal
 import com.ivione93.R
 import com.ivione93.TopGame
+import com.ivione93.data.GangameDataSource
 
 class TopOwnedFragment : BaseListFragment() {
 
@@ -16,7 +17,40 @@ class TopOwnedFragment : BaseListFragment() {
         return DataBindingRecyclerAdapter<TopGame>(BR.topGame, R.layout.item_top_game)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onResume() {
+        super.onResume()
+        showMostOwnedGames()
+    }
+
+    @SuppressLint("CheckResult")
+    private fun showMostOwnedGames() {
+        GangameDataSource.getMostOwned()
+            .subscribe({ list ->
+                replaceItems(list)
+            }, { error ->
+                showError(error)
+            })
+    }
+
+    private fun replaceItems(list: List<TopGame>) {
+        with(listAdapter as DataBindingRecyclerAdapter<TopGame>) {
+            items.clear()
+            items.addAll(list)
+            notifyDataSetChanged()
+        }
+    }
+
+    private fun showError(error: Throwable) {
+        error.printStackTrace()
+
+        view?.let {
+            Snackbar.make(view as View, R.string.error_request, Snackbar.LENGTH_LONG)
+                .setAction(R.string.label_retry, { _: View -> showMostOwnedGames()})
+                .show()
+        }
+    }
+
+    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         (listAdapter as DataBindingRecyclerAdapter<TopGame>)
@@ -69,5 +103,5 @@ class TopOwnedFragment : BaseListFragment() {
                 6,
                 "https://upload.wikimedia.org/wikipedia/en/7/76/Counter-Strike_Global_Offensive_icon.jpg")
         )
-    }
+    }*/
 }
